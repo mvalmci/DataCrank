@@ -4,19 +4,19 @@
 	"firstname": "Tadej",
 	"lastname": "Pocagar",
     "picture_path" : "pictures/Pogacar.png",
-	"trainings": "Tadej"
+	"trainings": "Tadej_trainings"
 }, {
 	"id": 2,
 	"date_of_birth": 2003,
 	"firstname": "Isaac",
 	"lastname": "Del Toro",
     "picture_path" : "pictures/DelToro.png",
-	"trainings": "Toro"
+	"trainings": "Toro_trainings"
 }, {
 	"id": 3,
 	"date_of_birth": 1992,
 	"firstname": "Adam",
 	"lastname": "Yates",
     "picture_path" : "pictures/Yates.png",
-	"trainings": "Yates"
+	"trainings": "Yates_trainings"
 }]
