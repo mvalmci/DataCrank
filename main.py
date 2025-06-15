@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 import base64
 from io import BytesIO
+import plot_power_curves
 
 #Streamlit settings---------------------------------------------------------------------
 st.set_page_config(layout="wide")
@@ -12,7 +13,6 @@ primaryColor="#BF2A7C" #PINK
 backgroundColor="#FFFFFF" #MAIN WINDOW BACKGROUND COLOR (white)
 secondaryBackgroundColor="#EBF3FC" #SIDEBAR COLOR (light blue)
 textColor="#31333F"
-
 
 #Code für Bild mit Overlay-Text---------------------------------------------------------
 image_path = r"pictures/Team-header-826840676.jpg"
@@ -39,7 +39,7 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# Main window-------------------------------------------------------------------------------
+# Main window---------------------------------------------------------------------------
 st.subheader("Top 3 rider over all categories")
 
 # Ranking
@@ -94,4 +94,41 @@ st.sidebar.selectbox("Show best...", ["Sprinter", "Climber", "Endurance"], key="
 st.sidebar.title("Select Rider to analyze training data in detail")
 st.sidebar.selectbox("Select Rider", ["Pogacar", "Yates", "Del Toro"], key="rider_select")
 st.sidebar.button("Analyze", type="primary")
+
+#neuer Abschnitt - Trainingsanalyse------------------------------------------------------
+st.markdown("<div style='height: 40px;'></div>", unsafe_allow_html=True)
+
+col1, col2 = st.columns([1, 1])
+
+with col1:
+    st.subheader("Precise training analysis of")
+
+with col2:
+    st.selectbox("Select rider", ["Pogacar", "Yates", "Del Toro"], key="rider_select_2")
+
+
+st.markdown("<div style='height: 40px;'></div>", unsafe_allow_html=True)
+
+
+col1, col2, col3, col4 = st.columns([1, 1, 1, 1])
+
+with col1:
+    st.button("power curve last training", type="secondary")
+
+with col2:
+    st.button("power curve after 2h", type="secondary")
+
+with col3:
+    st.button("power curve after 4h", type="secondary")
+
+with col4:
+    st.button("power curve after 5h", type="secondary")
+
+#plot power curve for presentation, no real functions------------------------------------------
+
+
+training1 = plot_power_curves.load_data("Tadej_trainings/2016_12_14_08_58_06.csv")
+best_effort1 = plot_power_curves.find_best_effort(training1["power"])
+figure1 = plot_power_curves.plot_power_curve(best_effort1)
+st.plotly_chart(figure1, use_container_width=True)
 
