@@ -5,6 +5,7 @@ import pandas as pd
 import base64
 from io import BytesIO
 import plot_power_curves
+from streamlit_calendar import calendar
 
 #Streamlit settings---------------------------------------------------------------------
 st.set_page_config(layout="wide")
@@ -132,3 +133,78 @@ best_effort1 = plot_power_curves.find_best_effort(training1["power"])
 figure1 = plot_power_curves.plot_power_curve(best_effort1)
 st.plotly_chart(figure1, use_container_width=True)
 
+#Race planner-------------------------------------------------------------------
+
+st.markdown("<div style='height: 40px;'></div>", unsafe_allow_html=True)
+st.subheader("Race planner 🏁")
+
+# Initialize calendar
+if "events" not in st.session_state:
+    st.session_state["events"] = [
+        {
+            "title": "Tour de France",
+            "color": "#FF6C6C",
+            "start": "2025-07-05",
+            "end": "2025-07-28",
+            "resourceId": "a",
+        },
+        {
+            "title": "Deutschland Tour",
+            "color": "#FFBD45",
+            "start": "2025-08-20",
+            "end": "2025-08-25",
+            "resourceId": "b",
+        },
+    ]
+
+# UI Elements for Calendar Mode Selection
+mode = st.selectbox(
+    "Calendar Mode:",
+    (
+        "daygrid",
+        "timegrid",
+        "timeline",
+        "list",
+    ),
+)
+# Calendar configuration options based on selected mode
+calendar_options = {
+    "editable": True,
+    "navLinks": True,
+    "selectable": True,
+    "headerToolbar": {
+        "left": "today prev,next",
+        "center": "title",
+        "right": "",
+    },
+    "initialDate": "2025-06-15",
+}
+if "resource" in mode:
+    if mode == "daygrid":
+        calendar_options.update({
+            "initialView": "dayGridMonth",
+            "resourceGroupField": "building",
+        })
+    elif mode == "timegrid":
+        calendar_options.update({"initialView": "timeGridWeek"})
+    elif mode == "timeline":
+        calendar_options.update({
+            "initialView": "timelineMonth",
+        })
+    elif mode == "list":
+        calendar_options.update({"initialView": "listMonth"})
+else:
+    if mode == "daygrid":
+        calendar_options.update({"initialView": "dayGridMonth"})
+    elif mode == "timegrid":
+        calendar_options.update({"initialView": "timeGridWeek"})
+    elif mode == "timeline":
+        calendar_options.update({"initialView": "timelineMonth"})
+    elif mode == "list":
+        calendar_options.update({"initialView": "listMonth"})  
+
+# Create calendar instance
+calendar_instance = calendar(
+    events=st.session_state["events"],
+    options=calendar_options,
+)   
