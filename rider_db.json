@@ -1,22 +1,34 @@
-[{
-	"id": 1,
-	"date_of_birth": 1998,
-	"firstname": "Tadej",
-	"lastname": "Pocagar",
-    "picture_path" : "pictures/Pogacar.png",
-	"trainings": "Tadej_trainings"
-}, {
-	"id": 2,
-	"date_of_birth": 2003,
-	"firstname": "Isaac",
-	"lastname": "Del Toro",
-    "picture_path" : "pictures/DelToro.png",
-	"trainings": "Toro_trainings"
-}, {
-	"id": 3,
-	"date_of_birth": 1992,
-	"firstname": "Adam",
-	"lastname": "Yates",
-    "picture_path" : "pictures/Yates.png",
-	"trainings": "Yates_trainings"
-}]
+[
+    {
+        "id": 1,
+        "date_of_birth": 1998,
+        "firstname": "Tadej",
+        "lastname": "Pogacar",
+        "picture_path": "pictures/Pogacar.png",
+        "trainings": "Tadej_trainings"
+    },
+    {
+        "id": 2,
+        "date_of_birth": 2003,
+        "firstname": "Isaac",
+        "lastname": "Del Toro",
+        "picture_path": "pictures/DelToro.png",
+        "trainings": "Toro_trainings"
+    },
+    {
+        "id": 3,
+        "date_of_birth": 1992,
+        "firstname": "Adam",
+        "lastname": "Yates",
+        "picture_path": "pictures/Yates.png",
+        "trainings": "Yates_trainings"
+    },
+    {
+        "firstname": "Nils",
+        "lastname": "Politt",
+        "date_of_birth": 1994,
+        "picture_path": "pictures\\Politt_Nils.png",
+        "trainings": "Tadej_trainings",
+        "id": 4
+    }
+]
