@@ -1,5 +1,5 @@
 import streamlit as st
-import plot_power_curves
+import power_curve
 from PIL import Image
 import base64
 from io import BytesIO
@@ -82,18 +82,18 @@ with col1:
     st.button("power curve last training", type="secondary")
 
 with col2:
-    st.button("power curve after 2h", type="secondary")
+    st.button("power curve fresh", type="secondary")
 
 with col3:
-    st.button("power curve after 4h", type="secondary")
+    st.button("power curve tired", type="secondary")
 
 with col4:
-    st.button("power curve after 5h", type="secondary")
+    st.button("power curve very tired", type="secondary")
 
 #plot power curve for presentation, no real functions------------------------------------------
 
 
-training1 = plot_power_curves.load_data("Tadej_trainings/2016_12_14_08_58_06.csv")
-best_effort1 = plot_power_curves.find_best_effort(training1["power"])
-figure1 = plot_power_curves.plot_power_curve(best_effort1)
+training1 = power_curve.load_data("Tadej_trainings/2016_12_14_08_58_06.csv")
+best_effort1 = power_curve.find_best_effort(training1["power"])
+figure1 = power_curve.plot_power_curve(best_effort1)
 st.plotly_chart(figure1, use_container_width=True)
