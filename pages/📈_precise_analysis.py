@@ -56,7 +56,7 @@ st.markdown(f"""
 
 st.markdown("<div style='height: 40px;'></div>", unsafe_allow_html=True)
 
-col1, col2, col3= st.columns([1, 1, 1])
+col1, col2= st.columns([1, 1])
 
 with col1:
     st.subheader("Precise training analysis of")
@@ -73,34 +73,36 @@ with col2:
     else:
         st.error("Rider data not found.")
 
-with col3:
-    st.subheader("Riders statistics")
-    with st.spinner("Loading statistics..."):
-        rider_folder = {
-            "Pogacar, Tadej": ("Pogacar_Tadej"),
-            "Yates, Adam": ("Yates_Adams"),
-            "Del Toro, Isaac": ("Del Torro_Isaac")
-        }
-        if rider_selected in rider_folder:
-            folder_path = rider_folder[rider_selected]
-            try:
-                folder = folder_path
-                result = calculate_statistics.total_elevation_gain(folder)
-                st.write(f"Gesamter Elevation Gain von {rider_selected}: {result:.2f} m")
-            except Exception as e:
-                st.error(f"Fehler beim berechnen des elevation gain: {e}")
-            try:
-                max_hr = calculate_statistics.max_hr(folder_path)
-                st.write(f"Höchste Herzfrequenz von {rider_selected}: {max_hr:.2f} bpm")
-            except Exception as e:
-                st.error(f"Fehler beim berechnen der höchsten Herzfrequenz: {e}")
-            try:
-                total_km_value = calculate_statistics.total_km(folder)
-                st.write(f"Gesamte Kilometer in {folder}: {total_km_value:.2f} km")
-            except Exception as e:
-                st.error(f"Fehler beim berechnen der Gesamtkilometer: {e}")
-        else:
-            st.info("Bitte einen Fahrer auswählen, um den elevation gain zu sehen.")
+
+st.subheader("Riders statistics")
+a, b, c = st.columns([1, 1, 1])
+
+with st.spinner("Loading statistics..."):
+    rider_folder = {
+        "Pogacar, Tadej": ("Pogacar_Tadej"),
+        "Yates, Adam": ("Yates_Adams"),
+        "Del Toro, Isaac": ("Del Torro_Isaac")
+    }
+    if rider_selected in rider_folder:
+        folder_path = rider_folder[rider_selected]
+        try:
+            folder = folder_path
+            result = calculate_statistics.total_elevation_gain(folder)
+            a.metric(f"Gesamter Elevation Gain von {rider_selected}", f"{result:.2f} hm")
+        except Exception as e:
+            st.error(f"Fehler beim berechnen des elevation gain: {e}")
+        try:
+            max_hr = calculate_statistics.max_hr(folder_path)
+            b.metric(f"Höchste Herzfrequenz von {rider_selected}", f"{max_hr:.2f} bpm")
+        except Exception as e:
+            st.error(f"Fehler beim Berechnen der höchsten Herzfrequenz: {e}")
+        try:
+            total_km_value = calculate_statistics.total_km(folder)
+            c.metric(f"Gesamte Kilometer in {rider_selected}", f"{total_km_value:.2f} km")
+        except Exception as e:
+            st.error(f"Fehler beim Berechnen der Gesamtkilometer: {e}")
+    else:
+        st.info("Bitte einen Fahrer auswählen, um den elevation gain zu sehen.")
 
 
 
