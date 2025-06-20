@@ -26,14 +26,14 @@ def save_cycling_data(df, filename, output_file=input("Wie soll die neue Json Da
 def process_training_file(df: pd.DataFrame, filename: str):
     """Überprüft, ob ein Wert in 'power' > 0 ist – wenn ja, speichern."""
     if "power" not in df.columns:
-        print(f"⚠️ Datei {filename} hat keine 'power'-Spalte.")
+        print(f"Datei {filename} hat keine 'power'-Spalte.")
         return
 
     if df["power"].fillna(0).gt(0).any():
         save_cycling_data(df, filename)
-        print(f"✅ Cycling-Training erkannt & gespeichert: {filename}")
+        print(f"Cycling-Training erkannt & gespeichert: {filename}")
     else:
-        print(f"🚫 Kein Cycling-Training in Datei: {filename}")
+        print(f"Kein Cycling-Training in Datei: {filename}")
 
 # Beispielverwendung
 def get_csv_files(folder):

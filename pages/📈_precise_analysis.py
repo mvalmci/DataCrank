@@ -93,7 +93,7 @@ with col4:
 #plot power curve for presentation, no real functions------------------------------------------
 
 
-training1 = power_curve.load_data("Tadej_trainings/2016_12_14_08_58_06.csv")
+training1 = power_curve.load_data("Pogacar_Tadej/2016_12_14_08_58_06.csv")
 best_effort1 = power_curve.find_best_effort(training1["power"])
 figure1 = power_curve.plot_power_curve(best_effort1)
 st.plotly_chart(figure1, use_container_width=True)

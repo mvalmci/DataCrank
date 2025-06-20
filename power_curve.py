@@ -8,7 +8,7 @@ import numpy as np
 import plotly.io as pio
 import plotly.express as px
 
-def load_data(path="Tadej_trainings/2016_12_14_08_58_06.csv"):
+def load_data(path="Pogacar_Tadej/2016_12_14_08_58_06.csv"):
 
     df = pd.read_csv(path)
 
@@ -65,7 +65,7 @@ def used_energy_per_minute(power_per_full_minutes):
 
     
 
-def fatigue_indices(energy_per_minute, tired_limit=150000, very_tired_limit=300000):
+def fatigue_indices(energy_per_minute, tired_limit=1500000, very_tired_limit=3000000):
     summe = 0
     fresh_index = None
     tired_index = None

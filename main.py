@@ -5,6 +5,8 @@ import pandas as pd
 import base64
 from io import BytesIO
 from streamlit_calendar import calendar
+from sort_data import process_training_file
+import os
 
 #Streamlit settings---------------------------------------------------------------------
 st.set_page_config(layout="wide")
@@ -58,23 +60,44 @@ st.sidebar.markdown("## © 2025 - UAE Team Emirates")
 #Home Page------------------------------------------------------------------------------
 
 st.title("Upload new training")
+
 rider_options = ["Pogacar, Tadej", "Yates, Adam", "Del Toro, Isaac"]
-st.selectbox("Select rider", rider_options, key="rider_select")
+rider = st.selectbox("Select rider", rider_options, key="rider_select")
+
+uploaded_file = st.file_uploader("Add to Training Database", type='csv', help='Dataset containing training data')
+
+if uploaded_file is not None:
+    try:
+        st.write("Start read")
+        df = pd.read_csv(uploaded_file)
+        st.write("Read done")
+
+        folder_name = rider.replace(", ", "_").replace(" ", "_")
+        folder_path = folder_name
+        os.makedirs(folder_path, exist_ok=True)
+        st.write("Folder created")
+
+        csv_path = os.path.join(folder_path, uploaded_file.name)
+        with open(csv_path, "wb") as f:
+            f.write(uploaded_file.getbuffer())
+        st.write("CSV saved")
+
+        json_path = os.path.join(folder_path, "training_data.json")
+        # Dummy function for testing
+        success, message = True, "Test erfolgreich"
+        st.write("process_training_file done")
+
+        if success:
+            st.success(message)
+        else:
+            st.warning(message)
+
+    except Exception as e:
+        st.error(f"Fehler beim Verarbeiten der Datei: {e}")
 
 
-customer_file = st.file_uploader("Add to Training Database", type='csv', help='Dataset containing training data')
 
-customer_file_valid_flag = False
-if customer_file is not None:
-    # Check MIME type of the uploaded file
-    if  customer_file.name == "customer_data.csv":
-        customer_df = pd.read_csv(customer_file)
-        customer_file_valid_flag = True
-        st.success('Success')
-    else:
-        st.error('Error: please, re-upload file called customer_data.csv')
-
-#Select filters
+#Select filters-------------------------------------------------------------------------
 
 st.title("Current ranking")
 st.selectbox("Show best...", ["Sprinter", "Climber", "Endurance"], key="filter_select")
