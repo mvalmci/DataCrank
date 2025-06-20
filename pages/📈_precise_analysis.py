@@ -1,5 +1,4 @@
 import streamlit as st
-import power_curve
 from PIL import Image
 import base64
 from io import BytesIO
@@ -7,6 +6,7 @@ from read_rider_data import find_rider_data_by_name
 from power_curve import aggregate_best_efforts_from_json
 import os
 import plotly.graph_objects as go
+import calculate_statistics
 
 #Streamlit settings---------------------------------------------------------------------
 st.set_page_config(layout="wide")
@@ -56,7 +56,7 @@ st.markdown(f"""
 
 st.markdown("<div style='height: 40px;'></div>", unsafe_allow_html=True)
 
-col1, col2 = st.columns([1, 1])
+col1, col2, col3= st.columns([1, 1, 1])
 
 with col1:
     st.subheader("Precise training analysis of")
@@ -73,7 +73,59 @@ with col2:
     else:
         st.error("Rider data not found.")
 
+with col3:
+    st.subheader("Riders statistics")
+    with st.spinner("Loading statistics..."):
+        rider_folder = {
+            "Pogacar, Tadej": ("Pogacar_Tadej"),
+            "Yates, Adam": ("Yates_Adams"),
+            "Del Toro, Isaac": ("Del Torro_Isaac")
+        }
+        if rider_selected in rider_folder:
+            folder_path = rider_folder[rider_selected]
+            try:
+                folder = folder_path
+                result = calculate_statistics.total_elevation_gain(folder)
+                st.write(f"Gesamter Elevation Gain von {rider_selected}: {result:.2f} m")
+            except Exception as e:
+                st.error(f"Fehler beim berechnen des elevation gain: {e}")
+            try:
+                max_hr = calculate_statistics.max_hr(folder_path)
+                st.write(f"Höchste Herzfrequenz von {rider_selected}: {max_hr:.2f} bpm")
+            except Exception as e:
+                st.error(f"Fehler beim berechnen der höchsten Herzfrequenz: {e}")
+            try:
+                total_km_value = calculate_statistics.total_km(folder)
+                st.write(f"Gesamte Kilometer in {folder}: {total_km_value:.2f} km")
+            except Exception as e:
+                st.error(f"Fehler beim berechnen der Gesamtkilometer: {e}")
+        else:
+            st.info("Bitte einen Fahrer auswählen, um den elevation gain zu sehen.")
+
+
+
 with st.spinner("Loading Power Curve..."):
+#Filter Buttons-------------------------------------------------------------------
+    st.markdown("<div style='height: 40px;'></div>", unsafe_allow_html=True)
+
+    st.subheader("Please select a Filter")
+
+    col1, col2, col3, col4 = st.columns([1, 1, 1, 1])
+
+    with col1:
+        st.button("power curve last training", type="secondary")
+
+    with col2:
+        st.button("power curve fresh", type="secondary")
+
+    with col3:
+        st.button("power curve tired", type="secondary")
+
+    with col4:
+        st.button("power curve very tired", type="secondary")
+
+
+#Interaktive Power Curve---------------------------------------------------------------
     rider_json_and_folder = {
         "Pogacar, Tadej": ("cycling_data_tadej.json", "Pogacar_Tadej"),
         "Yates, Adam": ("cycling_data_yates.json", "Yates_Adam"),
@@ -84,7 +136,7 @@ with st.spinner("Loading Power Curve..."):
         json_path, folder_path = rider_json_and_folder[rider_selected]
         try:
             df_best = aggregate_best_efforts_from_json(json_path, folder_path)
-            st.subheader("Overall Power Curve")
+            st.subheader("Power Curve for all trainings")
             fig = go.Figure()
             fig.add_trace(go.Scatter(
                 x=df_best["Time/s"], 
@@ -109,22 +161,3 @@ with st.spinner("Loading Power Curve..."):
     else:
         st.info("Bitte einen Fahrer auswählen, um die Power Curve zu sehen.")
     
-
-
-st.markdown("<div style='height: 40px;'></div>", unsafe_allow_html=True)
-
-st.subheader("Please select a Filter")
-
-col1, col2, col3, col4 = st.columns([1, 1, 1, 1])
-
-with col1:
-    st.button("power curve last training", type="secondary")
-
-with col2:
-    st.button("power curve fresh", type="secondary")
-
-with col3:
-    st.button("power curve tired", type="secondary")
-
-with col4:
-    st.button("power curve very tired", type="secondary")
