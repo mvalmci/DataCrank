@@ -7,6 +7,7 @@ from power_curve import aggregate_best_efforts_from_json
 import os
 import plotly.graph_objects as go
 import calculate_statistics
+import power_curve
 
 #Streamlit settings---------------------------------------------------------------------
 st.set_page_config(layout="wide")
@@ -110,21 +111,17 @@ with st.spinner("Loading Power Curve..."):
 #Filter Buttons-------------------------------------------------------------------
     st.markdown("<div style='height: 40px;'></div>", unsafe_allow_html=True)
 
-    st.subheader("Please select a Filter")
+# st.subheader("Please select a Filter")
+# col1, col2, col3, col4 = st.columns([1, 1, 1, 1])
 
-    col1, col2, col3, col4 = st.columns([1, 1, 1, 1])
-
-    with col1:
-        st.button("power curve last training", type="secondary")
-
-    with col2:
-        st.button("power curve fresh", type="secondary")
-
-    with col3:
-        st.button("power curve tired", type="secondary")
-
-    with col4:
-        st.button("power curve very tired", type="secondary")
+# with col1:
+#     btn_last = st.button("power curve last training", type="secondary")
+# with col2:
+#     btn_fresh = st.button("power curve fresh", type="secondary")
+# with col3:
+#     btn_tired = st.button("power curve tired", type="secondary")
+# with col4:
+#     btn_very_tired = st.button("power curve very tired", type="secondary")
 
 
 #Interaktive Power Curve---------------------------------------------------------------

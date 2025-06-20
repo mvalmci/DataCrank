@@ -118,6 +118,57 @@ def aggregate_best_efforts_from_json(json_path, folder_with_csvs, windows=[30, 6
     return result_df
 
 
+
+# def aggregate_best_efforts_from_json_with_fatigue(json_path, windows, fatigue_filter="Frisch", tired_limit=1500000, very_tired_limit=3000000):
+#     # 1. JSON einlesen und Dateinamen extrahieren
+#     with open(json_path, 'r', encoding='utf-8') as f:
+#         data = json.load(f)
+#     csv_files = data['csv_files']
+
+#     best_overall = {window: float('-inf') for window in windows}
+
+#     for csv_file in csv_files:
+#         df = pd.read_csv(csv_file)
+#         if "power" not in df.columns:
+#             continue
+
+#         # Ermüdungsfilter anwenden
+#         if "energy_per_minute" in df.columns:
+#             energy_list = df["energy_per_minute"].fillna(0).tolist()
+#         else:
+#             # Alternativ: Energie selbst berechnen aus Power (z. B. df["power"].rolling(60).sum()*1)
+#             energy_list = df["power"].fillna(0).tolist()  # Dummy
+
+#         fresh_index, tired_index, very_tired_index = fatigue_indices(
+#             energy_list, tired_limit, very_tired_limit
+#         )
+
+#         if fatigue_filter == "Frisch":
+#             start_index = fresh_index or 0
+#         elif fatigue_filter == "Ermüdet":
+#             start_index = tired_index or 0
+#         elif fatigue_filter == "Sehr müde":
+#             start_index = very_tired_index or 0
+#         else:
+#             start_index = 0
+
+#         # DataFrame ab Filter-Index verwenden
+#         df_filtered = df.iloc[start_index:].reset_index(drop=True)
+#         df_efforts = find_best_effort(df_filtered["power"], windows)
+#         for i, row in df_efforts.iterrows():
+#             window = row['Time/s']
+#             value = row['Best Effort']
+#             if pd.notnull(value) and value > best_overall[window]:
+#                 best_overall[window] = value
+
+#     # Ergebnis-DataFrame bauen
+#     result_df = pd.DataFrame({
+#         'Time/s': list(best_overall.keys()),
+#         'Best Effort': list(best_overall.values())
+#     })
+
+#     return result_df
+
 if __name__ == "__main__":
 
     #training_data = load_data()
