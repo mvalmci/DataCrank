@@ -4,6 +4,9 @@ from PIL import Image
 import base64
 from io import BytesIO
 from read_rider_data import find_rider_data_by_name
+from power_curve import aggregate_best_efforts_from_json
+import os
+import plotly.graph_objects as go
 
 #Streamlit settings---------------------------------------------------------------------
 st.set_page_config(layout="wide")
@@ -69,6 +72,42 @@ with col2:
         st.markdown(f"Date of birth: {rider_data['date_of_birth']}")
     else:
         st.error("Rider data not found.")
+
+with st.spinner("Loading Power Curve..."):
+    rider_json_and_folder = {
+        "Pogacar, Tadej": ("cycling_data_tadej.json", "Pogacar_Tadej"),
+        "Yates, Adam": ("cycling_data_yates.json", "Yates_Adam"),
+        "Del Toro, Isaac": ("cycling_data_toro.json", "Del_Toro_Isaac")
+    }
+
+    if rider_selected in rider_json_and_folder:
+        json_path, folder_path = rider_json_and_folder[rider_selected]
+        try:
+            df_best = aggregate_best_efforts_from_json(json_path, folder_path)
+            st.subheader("Overall Power Curve")
+            fig = go.Figure()
+            fig.add_trace(go.Scatter(
+                x=df_best["Time/s"], 
+                y=df_best["Best Effort"], 
+                mode='lines+markers',
+                name="Best Effort"
+            ))
+            fig.update_layout(
+                xaxis_title="Time [s]",
+                yaxis_title="Best Effort [W]",
+                xaxis=dict(
+            tickmode='array',
+            tickvals=[30, 60, 180, 300, 600, 1800, 2000], 
+            ticktext=["30s", "1min", "3min", "5min", "10min", "30min", "33min"]
+        ),
+        title=f"Power Curve: {rider_selected}",
+        template="plotly_white"
+    )
+            st.plotly_chart(fig, use_container_width=True)
+        except Exception as e:
+            st.error(f"Fehler beim Laden oder Plotten der Power Curve: {e}")
+    else:
+        st.info("Bitte einen Fahrer auswählen, um die Power Curve zu sehen.")
     
 
 
@@ -89,11 +128,3 @@ with col3:
 
 with col4:
     st.button("power curve very tired", type="secondary")
-
-#plot power curve for presentation, no real functions------------------------------------------
-
-
-training1 = power_curve.load_data("Pogacar_Tadej/2016_12_14_08_58_06.csv")
-best_effort1 = power_curve.find_best_effort(training1["power"])
-figure1 = power_curve.plot_power_curve(best_effort1)
-st.plotly_chart(figure1, use_container_width=True)

@@ -58,19 +58,19 @@ st.subheader("Top 3 rider over all categories")
 col1, col2, col3 = st.columns(3)
 
 with col1:
-    st.image("pictures\DelToro.png", use_column_width=True)
+    st.image("pictures/DelToro.png", use_column_width=True)
     st.markdown("**Best Climber ⛰️**<br>FTP: 350 / Hours of training today: 4,5h", unsafe_allow_html=True)
     if st.button("Plan for upcoming Hill Stage", type="primary"):
         st.write("Planned for upcoming Hill Stage ✅")
 
 with col2:
-    st.image("pictures\Pogacar.png", use_column_width=True)
+    st.image("pictures/Pogacar.png", use_column_width=True)
     st.markdown("**Best Sprinter 📈**<br>FTP: 350 / Hours of training today: 4,5h", unsafe_allow_html=True)
     if st.button("Plan for upcoming Sprint Stage", type="primary"):
         st.write("Planned for upcoming Sprint Stage ✅")
 
 with col3:
-    st.image("pictures\Yates.png", use_column_width=True)
+    st.image("pictures/Yates.png", use_column_width=True)
     st.markdown("**Best over all categories 🔥**<br>FTP: 350 / Hours of training today: 4,5h", unsafe_allow_html=True)
     if st.button("Plan for upcoming race", type="primary"):
         st.write("Planned for upcoming Race ✅")

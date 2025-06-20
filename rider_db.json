@@ -5,7 +5,7 @@
         "firstname": "Tadej",
         "lastname": "Pogacar",
         "picture_path": "pictures/Pogacar.png",
-        "trainings": "Tadej_trainings"
+        "trainings": "Pogacar_Tadej"
     },
     {
         "id": 2,
@@ -13,7 +13,7 @@
         "firstname": "Isaac",
         "lastname": "Del Toro",
         "picture_path": "pictures/DelToro.png",
-        "trainings": "Toro_trainings"
+        "trainings": "Del Toro_Isaac"
     },
     {
         "id": 3,
@@ -21,14 +21,14 @@
         "firstname": "Adam",
         "lastname": "Yates",
         "picture_path": "pictures/Yates.png",
-        "trainings": "Yates_trainings"
+        "trainings": "Yates_Adams"
     },
     {
         "firstname": "Nils",
         "lastname": "Politt",
         "date_of_birth": 1994,
         "picture_path": "pictures\\Politt_Nils.png",
-        "trainings": "Tadej_trainings",
+        "trainings": "Politt_Nils",
         "id": 4
     }
 ]

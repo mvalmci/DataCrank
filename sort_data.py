@@ -5,7 +5,7 @@ import pandas as pd
 import json
 import os
 
-def save_cycling_data(df, filename, output_file=input("Wie soll die neue Json Datei heißen?")+ ".json"):
+def save_cycling_data(df, filename, output_file=".json"):
     """Speichert einen DataFrame als JSON-Eintrag, wenn 'power' > 0 vorkommt."""
     entry = {
         "source_file": filename,

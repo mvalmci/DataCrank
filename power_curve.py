@@ -7,6 +7,8 @@ import pandas as pd
 import numpy as np
 import plotly.io as pio
 import plotly.express as px
+import json
+import os
 
 def load_data(path="Pogacar_Tadej/2016_12_14_08_58_06.csv"):
 
@@ -85,17 +87,52 @@ def fatigue_indices(energy_per_minute, tired_limit=1500000, very_tired_limit=300
 
 
 
+
+def aggregate_best_efforts_from_json(json_path, folder_with_csvs, windows=[30, 60, 180, 300, 600, 1800, 2000]):
+    # 1. JSON einlesen und Dateinamen extrahieren
+    with open(json_path, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    csv_files = data['csv_files']  # Passe ggf. den Key an
+
+    # 2. Dictionary für alle besten Werte initialisieren
+    best_overall = {window: float('-inf') for window in windows}
+    # 3. Iteriere über alle Dateien
+    for csv_file in csv_files:
+        full_path = csv_file
+        df = pd.read_csv(full_path)
+        if "power" not in df.columns:
+            continue  # Datei überspringen, falls keine Power-Spalte vorhanden
+        df_efforts = find_best_effort(df["power"], windows)
+        for i, row in df_efforts.iterrows():
+            window = row['Time/s']
+            value = row['Best Effort']
+            if pd.notnull(value) and value > best_overall[window]:
+                best_overall[window] = value
+
+    # 4. Ergebnis-DataFrame bauen
+    result_df = pd.DataFrame({
+        'Time/s': list(best_overall.keys()),
+        'Best Effort': list(best_overall.values())
+    })
+
+    return result_df
+
+
 if __name__ == "__main__":
 
-    training_data = load_data()
-    avg_power = average_power_per_minute(training_data)
-    print(avg_power)
-    used_energy_per_minute = used_energy_per_minute(avg_power)
-    print(f"Used energy per minute: {used_energy_per_minute}")
+    #training_data = load_data()
+    #avg_power = average_power_per_minute(training_data)
+    #print(avg_power)
+    #used_energy_per_minute = used_energy_per_minute(avg_power)
+    #print(f"Used energy per minute: {used_energy_per_minute}")
 
-    fresh_index, tired_index, very_tired_index = fatigue_indices(used_energy_per_minute)
-    print(f"Fresh index: {fresh_index}")
-    print(f"Tired index: {tired_index}")
-    print(f"Very tired index: {very_tired_index}")
+    #fresh_index, tired_index, very_tired_index = fatigue_indices(used_energy_per_minute)
+    #print(f"Fresh index: {fresh_index}")
+    #print(f"Tired index: {tired_index}")
+    #print(f"Very tired index: {very_tired_index}")
 
-
+    df_best = aggregate_best_efforts_from_json(
+    "cycling_data_tadej.json",
+    "Pogacar_Tadej"
+        )
+    print(df_best)

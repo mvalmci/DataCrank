@@ -68,24 +68,24 @@ uploaded_file = st.file_uploader("Add to Training Database", type='csv', help='D
 
 if uploaded_file is not None:
     try:
-        st.write("Start read")
+        #st.write("Start read")
         df = pd.read_csv(uploaded_file)
-        st.write("Read done")
+        #st.write("Read done")
 
         folder_name = rider.replace(", ", "_").replace(" ", "_")
         folder_path = folder_name
         os.makedirs(folder_path, exist_ok=True)
-        st.write("Folder created")
+        #st.write("Folder created")
 
         csv_path = os.path.join(folder_path, uploaded_file.name)
         with open(csv_path, "wb") as f:
             f.write(uploaded_file.getbuffer())
-        st.write("CSV saved")
+        #st.write("CSV saved")
 
         json_path = os.path.join(folder_path, "training_data.json")
         # Dummy function for testing
-        success, message = True, "Test erfolgreich"
-        st.write("process_training_file done")
+        success, message = True, "Training erfolgreich verarbeitet"
+        #st.write("process_training_file done")
 
         if success:
             st.success(message)
@@ -94,15 +94,4 @@ if uploaded_file is not None:
 
     except Exception as e:
         st.error(f"Fehler beim Verarbeiten der Datei: {e}")
-
-
-
-#Select filters-------------------------------------------------------------------------
-
-st.title("Current ranking")
-st.selectbox("Show best...", ["Sprinter", "Climber", "Endurance"], key="filter_select")
-
-st.title("Select Rider to analyze training data in detail")
-st.selectbox("Select Rider", rider_options, key="rider_select_3")
-st.button("Analyze", type="primary")
 
