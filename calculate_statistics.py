@@ -62,11 +62,11 @@ def total_elevation_gain(folder_path, altitude_column='alt'):
                 total_gain += gain
             except Exception as e:
                 print(f"Fehler bei Datei {file}: {e}")
+
+        
     return total_gain
 
-def calculate_ftp():
-    ftp = 250  # Example value, replace with actual calculation
-    return ftp
+
 
 if __name__ == "__main__":
     # Example usage

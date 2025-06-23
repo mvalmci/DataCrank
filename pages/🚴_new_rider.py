@@ -35,6 +35,9 @@ with st.form("rider_form"):
         firstname = st.text_input("Vorname")
         lastname = st.text_input("Nachname")
         dob = st.number_input("Geburtsjahr", min_value=1900, max_value=2025, step=1)
+        total_km = None
+        total_hm = None
+        max_hr = None  # Diese Werte werden später berechnet
 
     with col2:
         trainings_folder = st.text_input("Trainingsordner (z. B. Tadej_trainings)")
@@ -62,7 +65,10 @@ with st.form("rider_form"):
                     "lastname": lastname,
                     "date_of_birth": dob,
                     "picture_path": picture_path,
-                    "trainings": trainings_folder
+                    "trainings": trainings_folder,
+                    "total_km": total_km,
+                    "total_hm": total_hm,
+                    "max_hr": max_hr
                 }
 
                 success = add_rider_to_db(new_rider)

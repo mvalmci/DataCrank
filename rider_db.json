@@ -1,34 +1,46 @@
 [
-    {
-        "id": 1,
-        "date_of_birth": 1998,
-        "firstname": "Tadej",
-        "lastname": "Pogacar",
-        "picture_path": "pictures/Pogacar.png",
-        "trainings": "Pogacar_Tadej"
-    },
-    {
-        "id": 2,
-        "date_of_birth": 2003,
-        "firstname": "Isaac",
-        "lastname": "Del Toro",
-        "picture_path": "pictures/DelToro.png",
-        "trainings": "Del Toro_Isaac"
-    },
-    {
-        "id": 3,
-        "date_of_birth": 1992,
-        "firstname": "Adam",
-        "lastname": "Yates",
-        "picture_path": "pictures/Yates.png",
-        "trainings": "Yates_Adams"
-    },
-    {
-        "firstname": "Nils",
-        "lastname": "Politt",
-        "date_of_birth": 1994,
-        "picture_path": "pictures\\Politt_Nils.png",
-        "trainings": "Politt_Nils",
-        "id": 4
-    }
+  {
+    "id": 1,
+    "date_of_birth": 1998,
+    "firstname": "Tadej",
+    "lastname": "Pogacar",
+    "picture_path": "pictures/Pogacar.png",
+    "trainings": "Pogacar_Tadej",
+    "total_km": 12999.645910000001,
+    "total_hm": 100336.34089999984,
+    "max_hr": 229
+  },
+  {
+    "id": 2,
+    "date_of_birth": 2003,
+    "firstname": "Isaac",
+    "lastname": "Del Torro",
+    "picture_path": "pictures/DelToro.png",
+    "trainings": "Del Torro_Isaac",
+    "total_km": 2062.6589999999997,
+    "total_hm": 30048.91600000046,
+    "max_hr": 220
+  },
+  {
+    "id": 3,
+    "date_of_birth": 1992,
+    "firstname": "Adams",
+    "lastname": "Yates",
+    "picture_path": "pictures/Yates.png",
+    "trainings": "Yates_Adams",
+    "total_km": 29274.47186000001,
+    "total_hm": 412915.8549999946,
+    "max_hr": 205
+  },
+  {
+    "firstname": "Nils",
+    "lastname": "Politt",
+    "date_of_birth": 1994,
+    "picture_path": "pictures\\Politt_Nils.png",
+    "trainings": "Politt_Nils",
+    "id": 4,
+    "total_km": "",
+    "total_hm": "",
+    "max_hr": ""
+  }
 ]
