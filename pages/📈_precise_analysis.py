@@ -110,13 +110,17 @@ with st.spinner("Loading Power Curve..."):
 
 
 #Interaktive Power Curve---------------------------------------------------------------
+    st.select_slider("Select Power Curve Phase", options=["Fresh", "Tired", "Very Tired"], value="Fresh", key="selected_phase")
+
+    selected_phase = st.session_state.selected_phase
+
     rider_json_and_folder = {
         "Pogacar, Tadej": ("cycling_data_tadej.json", "Pogacar_Tadej"),
         "Yates, Adams": ("cycling_data_yates.json", "Yates_Adam"),
         "Del Torro, Isaac": ("cycling_data_toro.json", "Del_Toro_Isaac")
     }
 
-    if rider_selected in rider_json_and_folder:
+    if rider_selected in rider_json_and_folder and selected_phase == "Fresh":
         json_path, folder_path = rider_json_and_folder[rider_selected]
         try:
             df_best = aggregate_best_efforts_from_json(json_path, folder_path)
@@ -142,6 +146,68 @@ with st.spinner("Loading Power Curve..."):
             st.plotly_chart(fig, use_container_width=True)
         except Exception as e:
             st.error(f"Fehler beim Laden oder Plotten der Power Curve: {e}")
+    
+    elif rider_selected in rider_json_and_folder and selected_phase == "Tired":
+        json_path, folder_path = rider_json_and_folder[rider_selected]
+        try:
+            tired_df, very_tired_df = power_curve.fatigue_powercurves_from_json(
+                json_path, 
+                windows=[30, 60, 180, 300, 600, 1800, 2000], 
+                tired_limit=150000, 
+                very_tired_limit=300000
+            )
+            st.subheader("Power Curve: Tired")
+            fig = go.Figure()
+            fig.add_trace(go.Scatter(
+                x=tired_df["Time/s"], 
+                y=tired_df["Best Effort"], 
+                mode='lines+markers',
+                name="Tired Best Effort"
+            ))
+            fig.update_layout(
+                xaxis_title="Time [s]",
+                yaxis_title="Best Effort [W]",
+                xaxis=dict(
+                    tickmode='array',
+                    tickvals=[30, 60, 180, 300, 600, 1800, 2000], 
+                    ticktext=["30s", "1min", "3min", "5min", "10min", "30min", "33min"]
+                ),
+                title=f"Power Curve: {rider_selected} - Tired",
+                template="plotly_white"
+            )
+            st.plotly_chart(fig, use_container_width=True)
+        except Exception as e:
+            st.error(f"Fehler beim Laden oder Plotten der Power Curve: {e}")
+    elif rider_selected in rider_json_and_folder and selected_phase == "Very Tired":
+        json_path, folder_path = rider_json_and_folder[rider_selected]
+        try:
+            tired_df, very_tired_df = power_curve.fatigue_powercurves_from_json(
+                json_path, 
+                windows=[30, 60, 180, 300, 600, 1800, 2000], 
+                tired_limit=150000, 
+                very_tired_limit=300000
+            )
+            st.subheader("Power Curve: Very Tired")
+            fig = go.Figure()
+            fig.add_trace(go.Scatter(
+                x=very_tired_df["Time/s"], 
+                y=very_tired_df["Best Effort"], 
+                mode='lines+markers',
+                name="Very Tired Best Effort"
+            ))
+            fig.update_layout(
+                xaxis_title="Time [s]",
+                yaxis_title="Best Effort [W]",
+                xaxis=dict(
+                    tickmode='array',
+                    tickvals=[30, 60, 180, 300, 600, 1800, 2000], 
+                    ticktext=["30s", "1min", "3min", "5min", "10min", "30min", "33min"]
+                ),
+                title=f"Power Curve: {rider_selected} - Very Tired",
+                template="plotly_white"
+            )
+            st.plotly_chart(fig, use_container_width=True)
+        except Exception as e:
+            st.error(f"Fehler beim Laden oder Plotten der Power Curve: {e}")
     else:
         st.info("Bitte einen Fahrer auswählen, um die Power Curve zu sehen.")
-    

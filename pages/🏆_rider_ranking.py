@@ -43,18 +43,27 @@ with col1:
     best_climber = statistik[0]
     
     st.image(best_climber["picture_path"], use_column_width=True)
-    st.markdown("**Best Climber ⛰️**<br>FTP: 350 / Hours of training today: 4,5h", unsafe_allow_html=True)
+    st.write(best_climber["firstname"], best_climber["lastname"])
+    st.markdown("**Best Climber ⛰️**", unsafe_allow_html=True)
     if st.button("Plan for upcoming Hill Stage", type="primary"):
         st.write("Planned for upcoming Hill Stage ✅")
 
 with col2:
-    st.image("pictures/Pogacar.png", use_column_width=True)
-    st.markdown("**Best Sprinter 📈**<br>FTP: 350 / Hours of training today: 4,5h", unsafe_allow_html=True)
+
+    with open("rider_db.json", "r", encoding="utf-8") as file:
+        riders = json.load(file)
+
+    sprinter = func_rider_ranking.get_best_sprinter(riders)
+    best_sprinter = sprinter[0]
+
+    st.image(best_sprinter["picture_path"], use_column_width=True)
+    st.write(best_sprinter["firstname"], best_sprinter["lastname"])
+    st.markdown("**Best Sprinter 📈**", unsafe_allow_html=True)
     if st.button("Plan for upcoming Sprint Stage", type="primary"):
         st.write("Planned for upcoming Sprint Stage ✅")
 
 with col3:
     st.image("pictures/Yates.png", use_column_width=True)
-    st.markdown("**Best over all categories 🔥**<br>FTP: 350 / Hours of training today: 4,5h", unsafe_allow_html=True)
+    st.markdown("**Best over all categories 🔥**", unsafe_allow_html=True)
     if st.button("Plan for upcoming race", type="primary"):
         st.write("Planned for upcoming Race ✅")

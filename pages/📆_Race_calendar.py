@@ -30,6 +30,7 @@ st.sidebar.markdown("### maguire@uaeteamemirates.com")
 st.sidebar.markdown("## © 2025 - UAE Team Emirates")
 
 
+
 #Race planner-------------------------------------------------------------------
 
 st.markdown("<div style='height: 40px;'></div>", unsafe_allow_html=True)

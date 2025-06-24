@@ -119,55 +119,69 @@ def aggregate_best_efforts_from_json(json_path, folder_with_csvs, windows=[30, 6
 
 
 
-# def aggregate_best_efforts_from_json_with_fatigue(json_path, windows, fatigue_filter="Frisch", tired_limit=1500000, very_tired_limit=3000000):
-#     # 1. JSON einlesen und Dateinamen extrahieren
-#     with open(json_path, 'r', encoding='utf-8') as f:
-#         data = json.load(f)
-#     csv_files = data['csv_files']
+def fatigue_powercurves_from_json(
+    json_path, 
+    windows=[30, 60, 180, 300, 600, 1800, 2000], 
+    tired_limit=150000, 
+    very_tired_limit=300000
+):
+    # 1. JSON einlesen und Dateinamen extrahieren
+    with open(json_path, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    csv_files = data['csv_files']
 
-#     best_overall = {window: float('-inf') for window in windows}
+    # 2. Dictionaries für beste Werte initialisieren
+    tired_best = {window: float('-inf') for window in windows}
+    very_tired_best = {window: float('-inf') for window in windows}
 
-#     for csv_file in csv_files:
-#         df = pd.read_csv(csv_file)
-#         if "power" not in df.columns:
-#             continue
+    for csv_file in csv_files:
+        df = pd.read_csv(csv_file)
+        if "power" not in df.columns:
+            continue
 
-#         # Ermüdungsfilter anwenden
-#         if "energy_per_minute" in df.columns:
-#             energy_list = df["energy_per_minute"].fillna(0).tolist()
-#         else:
-#             # Alternativ: Energie selbst berechnen aus Power (z. B. df["power"].rolling(60).sum()*1)
-#             energy_list = df["power"].fillna(0).tolist()  # Dummy
+        # Fatigue indices bestimmen
+        avg_power = df["power"].rolling(window=60, min_periods=60).mean().dropna().reset_index(drop=True)
+        power_per_minute = avg_power.iloc[59::60].reset_index(drop=True)
+        energy_per_minute = power_per_minute * 60  # Joule
 
-#         fresh_index, tired_index, very_tired_index = fatigue_indices(
-#             energy_list, tired_limit, very_tired_limit
-#         )
+        fresh_idx, tired_idx, very_tired_idx = fatigue_indices(energy_per_minute, tired_limit, very_tired_limit)
 
-#         if fatigue_filter == "Frisch":
-#             start_index = fresh_index or 0
-#         elif fatigue_filter == "Ermüdet":
-#             start_index = tired_index or 0
-#         elif fatigue_filter == "Sehr müde":
-#             start_index = very_tired_index or 0
-#         else:
-#             start_index = 0
+        # tired-Abschnitt
+        tired_start = (tired_idx + 1) * 60 if tired_idx is not None else None
+        very_tired_start = (very_tired_idx + 1) * 60 if very_tired_idx is not None else None
+        n = len(df)
 
-#         # DataFrame ab Filter-Index verwenden
-#         df_filtered = df.iloc[start_index:].reset_index(drop=True)
-#         df_efforts = find_best_effort(df_filtered["power"], windows)
-#         for i, row in df_efforts.iterrows():
-#             window = row['Time/s']
-#             value = row['Best Effort']
-#             if pd.notnull(value) and value > best_overall[window]:
-#                 best_overall[window] = value
+        # tired-Bereich: tired_start bis very_tired_start
+        if tired_start is not None and very_tired_start is not None and tired_start < very_tired_start:
+            tired_section = df["power"].iloc[tired_start:n].reset_index(drop=True)
+            tired_efforts = find_best_effort(tired_section, windows)
+            for i, row in tired_efforts.iterrows():
+                window = row['Time/s']
+                value = row['Best Effort']
+                if pd.notnull(value) and value > tired_best[window]:
+                    tired_best[window] = value
 
-#     # Ergebnis-DataFrame bauen
-#     result_df = pd.DataFrame({
-#         'Time/s': list(best_overall.keys()),
-#         'Best Effort': list(best_overall.values())
-#     })
+        # very tired-Bereich: very_tired_start bis Ende
+        if very_tired_start is not None and very_tired_start < n:
+            very_tired_section = df["power"].iloc[very_tired_start:].reset_index(drop=True)
+            very_tired_efforts = find_best_effort(very_tired_section, windows)
+            for i, row in very_tired_efforts.iterrows():
+                window = row['Time/s']
+                value = row['Best Effort']
+                if pd.notnull(value) and value > very_tired_best[window]:
+                    very_tired_best[window] = value
 
-#     return result_df
+    # Ergebnisse als DataFrames
+    tired_df = pd.DataFrame({
+        'Time/s': list(tired_best.keys()),
+        'Best Effort': list(tired_best.values())
+    })
+    very_tired_df = pd.DataFrame({
+        'Time/s': list(very_tired_best.keys()),
+        'Best Effort': list(very_tired_best.values())
+    })
+
+    return tired_df, very_tired_df
 
 if __name__ == "__main__":
 
@@ -187,3 +201,12 @@ if __name__ == "__main__":
     "Pogacar_Tadej"
         )
     print(df_best)
+
+
+    tired_df, very_tired_df = fatigue_powercurves_from_json(
+        "cycling_data_tadej.json",
+        windows=[30, 60, 180, 300, 600, 1800, 2000],
+        tired_limit=150000,
+        very_tired_limit=300000    
+    )   
+    print(tired_df, very_tired_df)
