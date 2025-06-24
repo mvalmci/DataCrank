@@ -17,6 +17,14 @@ def get_sorted_riders_by_elevation(riders):
     sorted_riders = sorted(riders, key=parse_hm, reverse=True)
     return sorted_riders
 
+
+def get_best_sprinter(df_best):
+    sprint_watts = df_best.iloc[0]
+
+    return sprint_watts
+
+
+
 if __name__ == "__main__":
 
     with open("rider_db.json", "r", encoding="utf-8") as file:
@@ -28,3 +36,12 @@ if __name__ == "__main__":
     print(statistik)
     bester_fahrer = statistik[1]
     print(f"Fahrer mit den meisten Höhenmetern: {bester_fahrer['firstname']} {bester_fahrer['lastname']} ({bester_fahrer['total_hm']} hm)")
+
+    # import power_curve
+
+    # folder_path = "cycling_data_tadej.json"
+  
+    # df_best = power_curve.aggregate_best_efforts_from_json(folder_path)
+
+    # watts = get_best_sprinter(df_best)
+    # print(watts)

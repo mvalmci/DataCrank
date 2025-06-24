@@ -8,6 +8,7 @@ import os
 import plotly.graph_objects as go
 import calculate_statistics
 import power_curve
+import json
 
 #Streamlit settings---------------------------------------------------------------------
 st.set_page_config(layout="wide")
@@ -16,7 +17,6 @@ primaryColor="#BF2A7C" #PINK
 backgroundColor="#FFFFFF" #MAIN WINDOW BACKGROUND COLOR (white)
 secondaryBackgroundColor="#EBF3FC" #SIDEBAR COLOR (light blue)
 textColor="#31333F"
-
 # Sidebar-------------------------------------------------------------------------------
 st.sidebar.image(
 Image.open('pictures\logo-uae.png'),
@@ -30,40 +30,13 @@ st.sidebar.markdown("### Luke Maguire")
 st.sidebar.markdown("### maguire@uaeteamemirates.com")
 st.sidebar.markdown("## © 2025 - UAE Team Emirates")
 
-#Code für Bild mit Overlay-Text---------------------------------------------------------
-image_path = r"pictures/Team-header-826840676.jpg"
-
-# Bild laden und in base64 umwandeln----------------------------------------------------
-def get_base64_image(path):
-    img = Image.open(path)
-    buffered = BytesIO()
-    img.save(buffered, format="JPEG")
-    return base64.b64encode(buffered.getvalue()).decode()
-
-img_base64 = get_base64_image(image_path)
-
-# HTML anzeigen-------------------------------------------------------------------------
-st.markdown(f"""
-<div style="position: relative; width: 100%; overflow: hidden;">
-    <img src="data:image/jpeg;base64,{img_base64}" 
-         style="width: 100%; height: 100%; object-fit: cover; filter: brightness(25%);">
-    <h1 style="position: absolute; top: 50%; left: 50%;
-               transform: translate(-50%, -50%);
-               color: white; font-size: 3em; margin: 0;">
-        UAE training analyzer
-    </h1>
-</div>
-""", unsafe_allow_html=True)
-
-st.markdown("<div style='height: 40px;'></div>", unsafe_allow_html=True)
-
 col1, col2= st.columns([1, 1])
 
 with col1:
     st.subheader("Precise training analysis of")
 
 with col2:
-    rider_options = ["Pogacar, Tadej", "Yates, Adam", "Del Toro, Isaac"]
+    rider_options = ["Pogacar, Tadej", "Yates, Adams", "Del Torro, Isaac"]
     rider_selected = st.selectbox("Select rider", rider_options, key="rider_select_2")
 
     rider_data = find_rider_data_by_name(rider_selected)
@@ -75,35 +48,47 @@ with col2:
         st.error("Rider data not found.")
 
 
+
 st.subheader("Riders statistics")
 a, b, c = st.columns([1, 1, 1])
 
-with st.spinner("Loading statistics..."):
-    rider_folder = {
-        "Pogacar, Tadej": ("Pogacar_Tadej"),
-        "Yates, Adam": ("Yates_Adams"),
-        "Del Toro, Isaac": ("Del Torro_Isaac")
-    }
-    if rider_selected in rider_folder:
-        folder_path = rider_folder[rider_selected]
+# Beispiel: JSON laden
+with open("rider_db.json", "r", encoding="utf-8") as f:
+    riders_data = json.load(f)
+
+# Mapping wie gehabt, aber Key anpassen (siehe unten!)
+rider_folder = {
+    "Pogacar, Tadej": "Pogacar_Tadej",
+    "Yates, Adams": "Yates_Adams",
+    "Del Torro, Isaac": "Del Torro_Isaac",
+    "Politt, Nils": "Politt_Nils"
+}
+
+if rider_selected in rider_folder:
+    # Namen aufsplitten, um Rider in JSON zu finden
+    lastname, firstname = [x.strip() for x in rider_selected.split(",", 1)]
+    # Passenden Fahrer aus JSON suchen
+    rider = next((r for r in riders_data if r["firstname"] == firstname and r["lastname"] == lastname), None)
+    if rider:
         try:
-            folder = folder_path
-            result = calculate_statistics.total_elevation_gain(folder)
-            a.metric(f"Gesamter Elevation Gain von {rider_selected}", f"{result:.2f} hm")
+            total_hm = rider.get("total_hm", 0)
+            a.metric(f"Gesamter Elevation Gain von {rider_selected}", f"{float(total_hm):.2f} hm" if total_hm else "Keine Daten")
         except Exception as e:
-            st.error(f"Fehler beim berechnen des elevation gain: {e}")
+            st.error(f"Fehler beim Anzeigen des elevation gain: {e}")
         try:
-            max_hr = calculate_statistics.max_hr(folder_path)
-            b.metric(f"Höchste Herzfrequenz von {rider_selected}", f"{max_hr:.2f} bpm")
+            max_hr = rider.get("max_hr", 0)
+            b.metric(f"Höchste Herzfrequenz von {rider_selected}", f"{float(max_hr):.2f} bpm" if max_hr else "Keine Daten")
         except Exception as e:
-            st.error(f"Fehler beim Berechnen der höchsten Herzfrequenz: {e}")
+            st.error(f"Fehler beim Anzeigen der höchsten Herzfrequenz: {e}")
         try:
-            total_km_value = calculate_statistics.total_km(folder)
-            c.metric(f"Gesamte Kilometer in {rider_selected}", f"{total_km_value:.2f} km")
+            total_km = rider.get("total_km", 0)
+            c.metric(f"Gesamte Kilometer in {rider_selected}", f"{float(total_km):.2f} km" if total_km else "Keine Daten")
         except Exception as e:
-            st.error(f"Fehler beim Berechnen der Gesamtkilometer: {e}")
+            st.error(f"Fehler beim Anzeigen der Gesamtkilometer: {e}")
     else:
-        st.info("Bitte einen Fahrer auswählen, um den elevation gain zu sehen.")
+        st.warning("Keine Statistikdaten für diesen Fahrer gefunden.")
+else:
+    st.info("Bitte einen Fahrer auswählen, um den elevation gain zu sehen.")
 
 
 
@@ -127,8 +112,8 @@ with st.spinner("Loading Power Curve..."):
 #Interaktive Power Curve---------------------------------------------------------------
     rider_json_and_folder = {
         "Pogacar, Tadej": ("cycling_data_tadej.json", "Pogacar_Tadej"),
-        "Yates, Adam": ("cycling_data_yates.json", "Yates_Adam"),
-        "Del Toro, Isaac": ("cycling_data_toro.json", "Del_Toro_Isaac")
+        "Yates, Adams": ("cycling_data_yates.json", "Yates_Adam"),
+        "Del Torro, Isaac": ("cycling_data_toro.json", "Del_Toro_Isaac")
     }
 
     if rider_selected in rider_json_and_folder:

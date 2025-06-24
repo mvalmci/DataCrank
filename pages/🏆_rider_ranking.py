@@ -5,6 +5,7 @@ from io import BytesIO
 import func_rider_ranking
 import json
 
+
 #Streamlit settings---------------------------------------------------------------------
 st.set_page_config(layout="wide")
 base="dark"
@@ -27,32 +28,6 @@ st.sidebar.markdown("### maguire@uaeteamemirates.com")
 st.sidebar.markdown("## © 2025 - UAE Team Emirates")
 
 
-#Code für Bild mit Overlay-Text---------------------------------------------------------
-image_path = r"pictures/Team-header-826840676.jpg"
-
-# Bild laden und in base64 umwandeln----------------------------------------------------
-def get_base64_image(path):
-    img = Image.open(path)
-    buffered = BytesIO()
-    img.save(buffered, format="JPEG")
-    return base64.b64encode(buffered.getvalue()).decode()
-
-img_base64 = get_base64_image(image_path)
-
-# HTML anzeigen-------------------------------------------------------------------------
-st.markdown(f"""
-<div style="position: relative; width: 100%; overflow: hidden;">
-    <img src="data:image/jpeg;base64,{img_base64}" 
-         style="width: 100%; height: 100%; object-fit: cover; filter: brightness(25%);">
-    <h1 style="position: absolute; top: 50%; left: 50%;
-               transform: translate(-50%, -50%);
-               color: white; font-size: 3em; margin: 0;">
-        UAE training analyzer
-    </h1>
-</div>
-""", unsafe_allow_html=True)
-
-# Main window---------------------------------------------------------------------------
 st.subheader("Top 3 rider over all categories")
 
 # Ranking
