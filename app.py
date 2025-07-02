@@ -12,15 +12,11 @@ import add_new_training
 #Streamlit settings---------------------------------------------------------------------
 st.set_page_config(layout="wide")
 base="dark"
-primaryColor="#BF2A7C" #PINK
-backgroundColor="#FFFFFF" #MAIN WINDOW BACKGROUND COLOR (white)
-secondaryBackgroundColor="#EBF3FC" #SIDEBAR COLOR (light blue)
-textColor="#31333F"
 
 #Code für Bild mit Overlay-Text---------------------------------------------------------
 image_path = r"pictures/Team-header-826840676.jpg"
 
-# Bild laden und in base64 umwandeln----------------------------------------------------
+#in base64 umwandeln----------------------------------------------------
 def get_base64_image(path):
     img = Image.open(path)
     buffered = BytesIO()
@@ -29,7 +25,7 @@ def get_base64_image(path):
 
 img_base64 = get_base64_image(image_path)
 
-# HTML anzeigen-------------------------------------------------------------------------
+#HTML-------------------------------------------------------------------------
 st.markdown(f"""
 <div style="position: relative; width: 100%; overflow: hidden;">
     <img src="data:image/jpeg;base64,{img_base64}" 
@@ -43,7 +39,7 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 
-# Sidebar-------------------------------------------------------------------------------
+#Sidebar-------------------------------------------------------------------------------
 st.sidebar.image(
 Image.open('pictures\logo-uae.png'),
 width=50, clamp=True, channels='RGB',

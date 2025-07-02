@@ -1,5 +1,4 @@
 import streamlit as st
-import json
 import os
 from PIL import Image
 from add_new_rider import load_rider_data, add_rider_to_db, PICTURE_DIR
@@ -7,10 +6,6 @@ from add_new_rider import load_rider_data, add_rider_to_db, PICTURE_DIR
 #Streamlit settings---------------------------------------------------------------------
 st.set_page_config(layout="wide")
 base="dark"
-primaryColor="#BF2A7C" #PINK
-backgroundColor="#FFFFFF" #MAIN WINDOW BACKGROUND COLOR (white)
-secondaryBackgroundColor="#EBF3FC" #SIDEBAR COLOR (light blue)
-textColor="#31333F"
 
 # Sidebar-------------------------------------------------------------------------------
 st.sidebar.image(
@@ -37,7 +32,7 @@ with st.form("rider_form"):
         dob = st.number_input("Geburtsjahr", min_value=1900, max_value=2025, step=1)
         total_km = None
         total_hm = None
-        max_hr = None  # Diese Werte werden später berechnet
+        max_hr = None
 
     with col2:
         trainings_folder = st.text_input("Trainingsordner (z. B. Tadej_trainings)")
@@ -47,11 +42,11 @@ with st.form("rider_form"):
 
     if submitted:
         if firstname and lastname and image_file and trainings_folder:
-            # Trainingsordner prüfen
+            #schauen ob es ordner gibt
             if not os.path.isdir(trainings_folder):
                 st.error(f"Trainingsordner '{trainings_folder}' wurde nicht gefunden.")
             else:
-                # Bild speichern
+                #save pic
                 image_ext = image_file.name.split('.')[-1]
                 image_filename = f"{lastname}_{firstname}.{image_ext}"
                 picture_path = os.path.join(PICTURE_DIR, image_filename)
@@ -78,7 +73,7 @@ with st.form("rider_form"):
         else:
             st.error("Bitte alle Felder korrekt ausfüllen.")
 
-# === Tabellenansicht der Rider-Datenbank ===
+#tabelle
 st.subheader("📋 Aktuelle Fahrer in der Datenbank")
 
 rider_data = load_rider_data()

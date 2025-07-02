@@ -29,14 +29,10 @@ st.sidebar.markdown("### Luke Maguire")
 st.sidebar.markdown("### maguire@uaeteamemirates.com")
 st.sidebar.markdown("## © 2025 - UAE Team Emirates")
 
-
-
 #Race planner-------------------------------------------------------------------
-
-st.markdown("<div style='height: 40px;'></div>", unsafe_allow_html=True)
 st.subheader("Race planner 🏁")
 
-# Initialize calendar
+#calendar
 if "events" not in st.session_state:
     st.session_state["events"] = [
         {

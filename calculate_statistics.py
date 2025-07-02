@@ -10,7 +10,6 @@ def max_hr(folder_path, hr_column='hr'):
             file_path = os.path.join(folder_path, file)
             try:
                 df = pd.read_csv(file_path)
-                # Prüfen, ob die Spalte existiert
                 if hr_column in df.columns:
                     current_max = pd.to_numeric(df[hr_column], errors='coerce').max()
                     if np.isnan(max_hr) or (not np.isnan(current_max) and current_max > max_hr):
@@ -69,7 +68,6 @@ def total_elevation_gain(folder_path, altitude_column='alt'):
 
 
 if __name__ == "__main__":
-    # Example usage
     df = pd.read_csv('Pogacar_Tadej\\2016_02_15_15_53_47.csv')
     elevation = calculate_elevation_gain(df)
     print(f"Total elevation gain: {elevation:.2f} m")

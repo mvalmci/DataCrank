@@ -8,7 +8,6 @@ import numpy as np
 import plotly.io as pio
 import plotly.express as px
 import json
-import os
 
 def load_data(path="Pogacar_Tadej/2016_12_14_08_58_06.csv"):
 
@@ -59,11 +58,11 @@ def used_energy_per_minute(power_per_full_minutes):
     if power_per_full_minutes.empty:
         return 0
     
-    energy_per_minute = power_per_full_minutes * 60  # Convert from Watts to Joules (1 W = 1 J/s)
+    energy_per_minute = power_per_full_minutes * 60  #von Watt zu joule
 
     df = pd.DataFrame(energy_per_minute, columns=["Energy (Joules)"])
 
-    return energy_per_minute
+    return energy_per_minute, df
 
     
 
@@ -89,19 +88,19 @@ def fatigue_indices(energy_per_minute, tired_limit=1500000, very_tired_limit=300
 
 
 def aggregate_best_efforts_from_json(json_path, folder_with_csvs, windows=[30, 60, 180, 300, 600, 1800, 2000]):
-    # 1. JSON einlesen und Dateinamen extrahieren
+    #json lesen
     with open(json_path, 'r', encoding='utf-8') as f:
         data = json.load(f)
-    csv_files = data['csv_files']  # Passe ggf. den Key an
+    csv_files = data['csv_files']
 
-    # 2. Dictionary für alle besten Werte initialisieren
+    #dict
     best_overall = {window: float('-inf') for window in windows}
-    # 3. Iteriere über alle Dateien
+    #über csvs iterieren
     for csv_file in csv_files:
         full_path = csv_file
         df = pd.read_csv(full_path)
         if "power" not in df.columns:
-            continue  # Datei überspringen, falls keine Power-Spalte vorhanden
+            continue
         df_efforts = find_best_effort(df["power"], windows)
         for i, row in df_efforts.iterrows():
             window = row['Time/s']
@@ -109,7 +108,7 @@ def aggregate_best_efforts_from_json(json_path, folder_with_csvs, windows=[30, 6
             if pd.notnull(value) and value > best_overall[window]:
                 best_overall[window] = value
 
-    # 4. Ergebnis-DataFrame bauen
+    #df zum zurückgeben
     result_df = pd.DataFrame({
         'Time/s': list(best_overall.keys()),
         'Best Effort': list(best_overall.values())
@@ -125,12 +124,12 @@ def fatigue_powercurves_from_json(
     tired_limit=150000, 
     very_tired_limit=300000
 ):
-    # 1. JSON einlesen und Dateinamen extrahieren
+    #wie oben, json lesen
     with open(json_path, 'r', encoding='utf-8') as f:
         data = json.load(f)
     csv_files = data['csv_files']
 
-    # 2. Dictionaries für beste Werte initialisieren
+    #seperate dicts
     tired_best = {window: float('-inf') for window in windows}
     very_tired_best = {window: float('-inf') for window in windows}
 
@@ -139,19 +138,19 @@ def fatigue_powercurves_from_json(
         if "power" not in df.columns:
             continue
 
-        # Fatigue indices bestimmen
+        #Fatigue indices ausrechnen
         avg_power = df["power"].rolling(window=60, min_periods=60).mean().dropna().reset_index(drop=True)
         power_per_minute = avg_power.iloc[59::60].reset_index(drop=True)
-        energy_per_minute = power_per_minute * 60  # Joule
+        energy_per_minute = power_per_minute * 60  #wieder in joule
 
         fresh_idx, tired_idx, very_tired_idx = fatigue_indices(energy_per_minute, tired_limit, very_tired_limit)
 
-        # tired-Abschnitt
+        
         tired_start = (tired_idx + 1) * 60 if tired_idx is not None else None
         very_tired_start = (very_tired_idx + 1) * 60 if very_tired_idx is not None else None
         n = len(df)
 
-        # tired-Bereich: tired_start bis very_tired_start
+        #tired_start bis ende
         if tired_start is not None and very_tired_start is not None and tired_start < very_tired_start:
             tired_section = df["power"].iloc[tired_start:n].reset_index(drop=True)
             tired_efforts = find_best_effort(tired_section, windows)
@@ -161,7 +160,7 @@ def fatigue_powercurves_from_json(
                 if pd.notnull(value) and value > tired_best[window]:
                     tired_best[window] = value
 
-        # very tired-Bereich: very_tired_start bis Ende
+        #very_tired_start bis ende
         if very_tired_start is not None and very_tired_start < n:
             very_tired_section = df["power"].iloc[very_tired_start:].reset_index(drop=True)
             very_tired_efforts = find_best_effort(very_tired_section, windows)
@@ -171,7 +170,7 @@ def fatigue_powercurves_from_json(
                 if pd.notnull(value) and value > very_tired_best[window]:
                     very_tired_best[window] = value
 
-    # Ergebnisse als DataFrames
+    #ergebnisse als ---_df
     tired_df = pd.DataFrame({
         'Time/s': list(tired_best.keys()),
         'Best Effort': list(tired_best.values())

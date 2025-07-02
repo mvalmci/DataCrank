@@ -22,13 +22,13 @@ def save_rider_data(data):
 def add_rider_to_db(new_rider):
     rider_data = load_rider_data()
 
-    # Prüfen auf Duplikat
+    #schauen ob der Fahrer existiert
     for rider in rider_data:
         if rider["firstname"] == new_rider["firstname"] and rider["lastname"] == new_rider["lastname"]:
             st.warning("Fahrer existiert bereits.")
             return False
 
-    # ID generieren
+    #neue id
     new_id = max([r["id"] for r in rider_data], default=0) + 1
     new_rider["id"] = new_id
 

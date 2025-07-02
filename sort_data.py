@@ -35,7 +35,6 @@ def process_training_file(df: pd.DataFrame, filename: str):
     else:
         print(f"Kein Cycling-Training in Datei: {filename}")
 
-# Beispielverwendung
 def get_csv_files(folder):
     return [os.path.join(folder, f) for f in os.listdir(folder) if f.endswith(".csv")]
 

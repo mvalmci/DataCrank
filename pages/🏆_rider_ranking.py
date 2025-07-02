@@ -1,17 +1,12 @@
 import streamlit as st
 from PIL import Image
-import base64
-from io import BytesIO
+import io
 import func_rider_ranking
 import json
-
 
 #Streamlit settings---------------------------------------------------------------------
 st.set_page_config(layout="wide")
 base="dark"
-primaryColor="#BF2A7C" #PINK
-backgroundColor="#FFFFFF" #MAIN WINDOW BACKGROUND COLOR (white)
-secondaryBackgroundColor="#EBF3FC" #SIDEBAR COLOR (light blue)
 textColor="#31333F"
 
 # Sidebar-------------------------------------------------------------------------------
@@ -30,8 +25,7 @@ st.sidebar.markdown("## © 2025 - UAE Team Emirates")
 
 st.subheader("Top 3 rider over all categories")
 
-# Ranking
-
+#ranking
 col1, col2, col3 = st.columns(3)
 
 with col1:

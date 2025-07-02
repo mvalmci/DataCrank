@@ -10,7 +10,6 @@ def load_rider_data():
 def find_rider_data_by_name(suchstring):
 
     person_data = load_rider_data()
-    #print(suchstring)
     if suchstring == "None":
         return {}
 
@@ -27,9 +26,7 @@ def find_rider_data_by_name(suchstring):
         return {}
     
 if __name__ == "__main__":
-
     rider_data = find_rider_data_by_name("Pogacar, Tadej")
-
     rider_data_2 = find_rider_data_by_name("Yates, Adam")
 
 

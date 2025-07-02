@@ -29,7 +29,6 @@ def new_training(rider, uploaded_file):
             #st.write("CSV saved")
 
             json_path = os.path.join(folder_path, "training_data.json")
-            # Dummy function for testing
             success, message = True, "Training erfolgreich verarbeitet"
             #st.write("process_training_file done")
 
@@ -53,22 +52,21 @@ def safe_statistics_to_json(lastname, firstname):
     else:
         riders = []
 
-    # Rider in der Liste suchen
+    #suche nach dem Rider
     for rider in riders:
         if rider["firstname"] == firstname and rider["lastname"] == lastname:
-            folder_path = rider["trainings"]  # oder wie du den Ordner bestimmst
+            folder_path = rider["trainings"]
 
-            # Statistiken berechnen und eintragen
+            #Werte berechnen 
             rider["total_km"] = calculate_statistics.total_km(folder_path, distance_column='km')
             rider["total_hm"] = calculate_statistics.total_elevation_gain(folder_path, altitude_column='alt')
             rider["max_hr"] = calculate_statistics.max_hr(folder_path, hr_column='hr')
             break
     else:
-        # Rider nicht gefunden, optional: Fehler oder neuen Rider anlegen
         st.error(f"Rider mit lastname {lastname} nicht gefunden!")
         return False
 
-    # Speichern
+    #dann speichern
     with open(FILENAME, "w", encoding="utf-8") as file:
         json.dump(riders, file, ensure_ascii=False, indent=2)
 
