@@ -18,7 +18,7 @@
 - **Automatische Einteilung in Fatigue-Phasen** zur optimalen Belastungssteuerung
 - **Visualisierung von Leistungsdaten** (z. B. Watt, Herzfrequenz, Distanz)
 - **Planung und Anpassung von Trainings- und Rennkalendern**
-- **Import und Verwaltung von Trainingsdaten** aus verschiedenen Quellen (JSON-Dateien)
+- **Import und Verwaltung von Trainingsdaten** aus verschiedenen Quellen (CSV-/ JSON-Dateien)
 - **Ranking und Statistikfunktionen** für Fahrer
 - **Benutzerfreundliche Python-Module** zur Erweiterung und Anpassung
 
@@ -28,8 +28,8 @@
 
 - **Sprache:** Python
 - **Datenanalyse:** Pandas, NumPy
-- **Visualisierung:** (optional) Matplotlib, Plotly
-- **Datenformate:** JSON für Trainings- und Fahrerdaten
+- **Visualisierung:** Stramlit, Matplotlib, Plotly
+- **Datenformate:** CSV u. JSON für Trainings- u. Fahrerdaten
 
 ---
 
@@ -48,7 +48,7 @@
 | `cycling_data_*.json`    | Beispielhafte Trainingsdaten einzelner Fahrer        |
 | `rider_db.json`          | Datenbank der Fahrer                                |
 | `pictures/`              | Bilder & Logos (z. B. UAE Team Emirates)            |
-| `pages/`                 | (Optional) Zusätzliche Seiten/Funktionen             |
+| `pages/`                 | Zusätzliche Seiten/Funktionen             |
 | Eigene Ordner je Fahrer  | z. B. `Pogacar_Tadej`, `Yates_Adams`                |
 
 > **Hinweis:** Die vollständige Dateiansicht findest du [hier auf GitHub](https://github.com/mvalmci/DataCrank/tree/main).
