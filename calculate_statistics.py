@@ -68,7 +68,7 @@ def total_elevation_gain(folder_path, altitude_column='alt'):
 
 
 if __name__ == "__main__":
-    df = pd.read_csv('Pogacar_Tadej\\2016_02_15_15_53_47.csv')
+    df = pd.read_csv('Pogacar_Tadej/2016_02_15_15_53_47.csv')
     elevation = calculate_elevation_gain(df)
     print(f"Total elevation gain: {elevation:.2f} m")
     folder = "Pogacar_Tadej"
