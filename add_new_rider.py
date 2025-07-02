@@ -16,8 +16,10 @@ def load_rider_data():
     return []
 
 def save_rider_data(data):
-    with open(FILENAME, "w", encoding="utf-8") as file:
+    tmp_filename = FILENAME + ".tmp"
+    with open(tmp_filename, "w", encoding="utf-8") as file:
         json.dump(data, file, indent=4)
+    os.replace(tmp_filename, FILENAME)
 
 def add_rider_to_db(new_rider):
     rider_data = load_rider_data()
