@@ -1,52 +1,92 @@
-# Abschlussprojekt Programmieruebung 2 von Simon Schwarzer &amp; Marius Valenta
-
 # DataCrank 🚴‍♂️
 
-![UAE Team Emirates Logo](assets/uae_team_emirates_logo.png)
+![UAE Team Emirates Logo](pictures/uae_team_emirates_logo.png)
+
+**Abschlussprojekt Programmierübung 2 von Simon Schwarzer & Marius Valenta**
+
+---
 
 ## Überblick
 
-**DataCrank** ist eine spezialisierte App für Trainingsleiter von Profi-Radteams. Ziel ist es, Trainingsdaten von Fahrern zu analysieren, Fatigue-Phasen zu erkennen und die optimale Rennplanung zu ermöglichen.
+**DataCrank** ist eine spezialisierte App für Trainingsleiter von Profi-Radsport-Teams. Mit DataCrank können Trainingsdaten von Fahrern analysiert, Fatigue-Phasen erkannt und die optimale Rennplanung durchgeführt werden. Besonderes Augenmerk liegt auf der datengetriebenen Unterstützung von Trainingsentscheidungen und der Visualisierung der Leistungsfähigkeit.
 
-## Features
+---
 
-- Analyse von Trainingsdaten für einzelne Fahrer oder Teams
-- Automatische Einteilung in Fatigue-Phasen (Belastungs- & Erholungsphasen)
-- Visualisierung von Leistungsdaten (z.B. Watt, Herzfrequenz, Distanz)
-- Planung und Anpassung von Trainings- und Rennkalendern
-- Datenimport aus verschiedenen Quellen (z.B. Powermeter, Trainingsdateien)
-- Datenschutz und sichere Datenverwaltung
+## Haupt-Features
 
-> Du kannst diese Liste beliebig erweitern, sobald Features definiert sind!
+- **Analyse von Trainingsdaten** für einzelne Fahrer oder Teams
+- **Automatische Einteilung in Fatigue-Phasen** zur optimalen Belastungssteuerung
+- **Visualisierung von Leistungsdaten** (z. B. Watt, Herzfrequenz, Distanz)
+- **Planung und Anpassung von Trainings- und Rennkalendern**
+- **Import und Verwaltung von Trainingsdaten** aus verschiedenen Quellen (JSON-Dateien)
+- **Ranking und Statistikfunktionen** für Fahrer
+- **Benutzerfreundliche Python-Module** zur Erweiterung und Anpassung
+
+---
 
 ## Technologie-Stack
 
-- **Backend:** Python
-- **Datenanalyse:** Pandas, NumPy, ggf. SciPy
-- **Visualisierung:** Matplotlib, Plotly (optional)
-- **Struktur:** Einteilung in Fatigue-Phasen zur besseren Trainingssteuerung
+- **Sprache:** Python
+- **Datenanalyse:** Pandas, NumPy
+- **Visualisierung:** (optional) Matplotlib, Plotly
+- **Datenformate:** JSON für Trainings- und Fahrerdaten
 
-## Erste Schritte
+---
 
-1. Repository klonen:
+## Projektstruktur & wichtige Dateien
+
+| Datei / Ordner           | Zweck/Beschreibung                                   |
+|------------------------- |------------------------------------------------------|
+| `main.py`                | Einstiegspunkt der App, zentrale Steuerung           |
+| `add_new_rider.py`       | Hinzufügen neuer Fahrer                              |
+| `add_new_training.py`    | Hinzufügen neuer Trainingseinträge                   |
+| `calculate_statistics.py`| Statistiken & Auswertungen zu Trainingsdaten         |
+| `func_rider_ranking.py`  | Fahrer-Rankings und Leistungsvergleich               |
+| `power_curve.py`         | Analyse und Darstellung von Power Curves             |
+| `sort_data.py`           | Sortierung und Filterung von Datensätzen             |
+| `read_rider_data.py`     | Einlesen und Verarbeiten von Fahrerdaten             |
+| `cycling_data_*.json`    | Beispielhafte Trainingsdaten einzelner Fahrer        |
+| `rider_db.json`          | Datenbank der Fahrer                                |
+| `pictures/`              | Bilder & Logos (z. B. UAE Team Emirates)            |
+| `pages/`                 | (Optional) Zusätzliche Seiten/Funktionen             |
+| Eigene Ordner je Fahrer  | z. B. `Pogacar_Tadej`, `Yates_Adams`                |
+
+> **Hinweis:** Die vollständige Dateiansicht findest du [hier auf GitHub](https://github.com/mvalmci/DataCrank/tree/main).
+
+---
+
+## Installation & Erste Schritte
+
+1. **Repository klonen:**
    ```bash
-   git clone https://github.com/dein-user/DataCrank.git
+   git clone https://github.com/mvalmci/DataCrank.git
    ```
-2. Abhängigkeiten installieren:
+
+2. **Abhängigkeiten installieren:**  
+   (mit pip und ggf. [PDM](https://pdm.fming.dev/))
    ```bash
    pip install -r requirements.txt
+   # oder
+   pdm install
    ```
-3. Anwendung starten (Beispiel):
+
+3. **Anwendung starten:**  
    ```bash
-   python main.py
+   streamlit run main.py
    ```
-4. Folge der Anleitung im Terminal oder siehe Dokumentation unter `/docs`.
 
-## Screenshots
+4. **Weitere Infos:**  
+   Lies die Dokumentation oder den Quellcode der Module für spezifische Anwendungsfälle.
 
-Hier kannst du einen Screenshot oder das Logo deines Teams einfügen:
+---
 
-![UAE Team Emirates Logo](assets/uae_team_emirates_logo.png)
+## Screenshots & Visuals
+
+Hier kannst du z.B. ein Team-Logo oder App-Screenshots einfügen:
+
+![UAE Team Emirates Logo](pictures/uae_team_emirates_logo.png)
+
+---
 
 ## Zielgruppe
 
@@ -55,4 +95,11 @@ Hier kannst du einen Screenshot oder das Logo deines Teams einfügen:
 
 ---
 
-> Dieses Projekt befindet sich noch in der Entwicklung! Vorschläge und Feedback sind willkommen.
+## Autoren
+
+- Simon Schwarzer
+- Marius Valenta
+
+---
+
+> Dieses Projekt befindet sich in der Entwicklung. Feedback & Anregungen sind willkommen!
