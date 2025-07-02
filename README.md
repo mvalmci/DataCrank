@@ -1,4 +1,4 @@
-# DataCrank 🚴‍♂️
+# DataCrank - UAE Team Emirates Trainingsanalyzer
 
 ![UAE Team Emirates Logo](pictures/logo-uae.png)
 
