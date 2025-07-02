@@ -6,24 +6,19 @@ import calculate_statistics
 import power_curve
 
 def get_sorted_riders_by_elevation(riders):
-    
-    # Stelle sicher, dass total_hm als Zahl interpretiert wird (falls als String gespeichert)
     def parse_hm(rider):
         try:
-            return int(rider.get("total_hm", 0))
-        except ValueError:
+            return int(rider.get("total_hm", 0) or 0)
+        except (ValueError, TypeError):
             return 0
 
-    # Sortierung nach Höhenmetern (absteigend)
     sorted_riders = sorted(riders, key=parse_hm, reverse=True)
     return sorted_riders
 
-
 def get_best_sprinter(riders):
-    
     def parse_30s(rider):
         try:
-            return float(rider.get("30", 0))
+            return float(rider.get("30", 0) or 0)
         except (ValueError, TypeError):
             return 0
 
