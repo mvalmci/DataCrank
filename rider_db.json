@@ -8,7 +8,7 @@
     "trainings": "Pogacar_Tadej",
     "total_km": 12999.645910000001,
     "total_hm": 100336.34089999984,
-    "max_hr": 229
+    "max_hr": 229.0
   },
   {
     "id": 2,
@@ -19,7 +19,7 @@
     "trainings": "Del Torro_Isaac",
     "total_km": 2062.6589999999997,
     "total_hm": 30048.91600000046,
-    "max_hr": 220
+    "max_hr": 220.0
   },
   {
     "id": 3,
@@ -30,7 +30,7 @@
     "trainings": "Yates_Adams",
     "total_km": 29274.47186000001,
     "total_hm": 412915.8549999946,
-    "max_hr": 205
+    "max_hr": 205.0
   },
   {
     "firstname": "Nils",
