@@ -23,10 +23,10 @@ st.sidebar.markdown("### maguire@uaeteamemirates.com")
 st.sidebar.markdown("## © 2025 - UAE Team Emirates")
 
 
-st.subheader("Top 3 rider over all categories")
+st.subheader("Top rider in each category")
 
 #ranking
-col1, col2, col3 = st.columns(3)
+col1, col2 = st.columns(2)
 
 with col1:
 
@@ -55,9 +55,3 @@ with col2:
     st.markdown("**Best Sprinter 📈**", unsafe_allow_html=True)
     if st.button("Plan for upcoming Sprint Stage", type="primary"):
         st.write("Planned for upcoming Sprint Stage ✅")
-
-with col3:
-    st.image("pictures/Yates.png", use_column_width=True)
-    st.markdown("**Best over all categories 🔥**", unsafe_allow_html=True)
-    if st.button("Plan for upcoming race", type="primary"):
-        st.write("Planned for upcoming Race ✅")
