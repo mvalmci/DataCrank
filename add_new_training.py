@@ -41,14 +41,17 @@ def new_training(rider, uploaded_file):
             st.error(f"Fehler beim Verarbeiten der Datei: {e}")
 
 
-
 def safe_statistics_to_json(lastname, firstname):
     FILENAME = "rider_db.json"
 
     # Bestehende Daten laden
     if os.path.exists(FILENAME):
-        with open(FILENAME, "r", encoding="utf-8") as file:
-            riders = json.load(file)
+        try:
+            with open(FILENAME, "r", encoding="utf-8") as file:
+                riders = json.load(file)
+        except json.JSONDecodeError:
+            st.error("rider_db.json ist beschädigt oder leer. Es wird ein neuer leerer Datensatz verwendet.")
+            riders = []
     else:
         riders = []
 
@@ -68,7 +71,4 @@ def safe_statistics_to_json(lastname, firstname):
 
     #dann speichern
     with open(FILENAME, "w", encoding="utf-8") as file:
-        json.dump(riders, file, ensure_ascii=False, indent=2)
-
-    st.success(f"Statistics for rider {lastname} saved to {FILENAME}")
-    return True
+        json.dump(riders, file, indent=4)

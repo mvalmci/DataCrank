@@ -52,11 +52,14 @@ with col2:
 st.subheader("Riders statistics")
 a, b, c = st.columns([1, 1, 1])
 
-# Beispiel: JSON laden
-with open("rider_db.json", "r", encoding="utf-8") as f:
-    riders_data = json.load(f)
+#json laden
+try:
+    with open("rider_db.json", "r", encoding="utf-8") as f:
+        riders_data = json.load(f)
+except (FileNotFoundError, json.JSONDecodeError):
+    riders_data = []
+    st.warning("Warnung: rider_db.json ist nicht vorhanden oder fehlerhaft.")
 
-# Mapping wie gehabt, aber Key anpassen (siehe unten!)
 rider_folder = {
     "Pogacar, Tadej": "Pogacar_Tadej",
     "Yates, Adams": "Yates_Adams",
