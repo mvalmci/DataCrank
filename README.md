@@ -1,6 +1,6 @@
 # DataCrank 🚴‍♂️
 
-![UAE Team Emirates Logo](pictures/uae_team_emirates_logo.png)
+![UAE Team Emirates Logo](pictures/logo-uae.png)
 
 **Abschlussprojekt Programmierübung 2 von Simon Schwarzer & Marius Valenta**
 
