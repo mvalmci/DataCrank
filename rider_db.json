@@ -39,8 +39,8 @@
     "picture_path": "pictures/Politt_Nils.png",
     "trainings": "Politt_Nils",
     "id": 4,
-    "total_km": "",
-    "total_hm": "",
-    "max_hr": ""
+    "total_km": null,
+    "total_hm": null,
+    "max_hr": null
   }
 ]
