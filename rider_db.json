@@ -36,7 +36,7 @@
     "firstname": "Nils",
     "lastname": "Politt",
     "date_of_birth": 1994,
-    "picture_path": "pictures\\Politt_Nils.png",
+    "picture_path": "pictures/Politt_Nils.png",
     "trainings": "Politt_Nils",
     "id": 4,
     "total_km": "",
