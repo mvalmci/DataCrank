@@ -11,7 +11,7 @@ textColor="#31333F"
 
 # Sidebar-------------------------------------------------------------------------------
 st.sidebar.image(
-Image.open('pictures\logo-uae.png'),
+Image.open('pictures/logo-uae.png'),
 width=50, clamp=True, channels='RGB',
 )
 st.sidebar.markdown("# CONTACT")
